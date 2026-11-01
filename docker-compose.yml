@@ -1,0 +1,14 @@
+# PostgreSQL 16 + TimescaleDB untuk notebook 02. Port 5440 agar tidak bentrok dengan PostgreSQL lokal.
+# Tag "latest-pg16" bergerak; versi sebenarnya dicatat otomatis oleh notebook (results/env_02.json).
+services:
+  db:
+    image: timescale/timescaledb:latest-pg16
+    container_name: ekg_bench_db
+    shm_size: 1gb
+    ports: ["5440:5432"]
+    environment:
+      POSTGRES_PASSWORD: postgres
+    command: ["postgres", "-c", "shared_buffers=1GB", "-c", "work_mem=64MB", "-c", "jit=off", "-c", "max_wal_size=8GB"]
+    volumes: ["ekg_pgdata:/var/lib/postgresql/data"]
+volumes:
+  ekg_pgdata:

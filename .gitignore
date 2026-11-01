@@ -1,0 +1,8 @@
+data/raw/
+data/processed/
+.venv/
+node_modules/
+.DS_Store
+__pycache__/
+.ipynb_checkpoints/
+bench/fe/signal.f32

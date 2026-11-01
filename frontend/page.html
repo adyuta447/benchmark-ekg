@@ -1,0 +1,149 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      body {
+        margin: 0;
+        background: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="host" style="width: 1200px; height: 300px"></div>
+    <script src="node_modules/chart.js/dist/chart.umd.js"></script>
+    <script>
+      function ecg(n) {
+        const a = new Float32Array(n);
+        for (let i = 0; i < n; i++) {
+          const t = (i % 208) / 208;
+          let v =
+            0.1 * Math.sin((2 * Math.PI * i) / 1000) +
+            0.15 * Math.exp(-((t - 0.2) ** 2) / 0.002) -
+            0.15 * Math.exp(-((t - 0.38) ** 2) / 0.0003) +
+            1.0 * Math.exp(-((t - 0.4) ** 2) / 0.0002) -
+            0.25 * Math.exp(-((t - 0.42) ** 2) / 0.0003) +
+            0.3 * Math.exp(-((t - 0.65) ** 2) / 0.004);
+          a[i] = v + 0.02 * (Math.random() - 0.5);
+        }
+        return a;
+      }
+      window.runBench = async function (mode, N, dur) {
+        const host = document.getElementById("host");
+        host.innerHTML = "";
+        const W = 1200,
+          H = 300,
+          src = ecg(N + 50000);
+        let off = 0;
+        let step;
+        if (mode === "canvas") {
+          const c = document.createElement("canvas");
+          c.width = W;
+          c.height = H;
+          host.appendChild(c);
+          const g = c.getContext("2d");
+          g.lineWidth = 1;
+          g.strokeStyle = "#000";
+          step = () => {
+            g.clearRect(0, 0, W, H);
+            g.beginPath();
+            for (let i = 0; i < N; i++) {
+              const x = (i * W) / N,
+                y = H / 2 - src[off + i] * 100;
+              i ? g.lineTo(x, y) : g.moveTo(x, y);
+            }
+            g.stroke();
+          };
+        } else if (mode === "svg") {
+          const ns = "http://www.w3.org/2000/svg";
+          const s = document.createElementNS(ns, "svg");
+          s.setAttribute("width", W);
+          s.setAttribute("height", H);
+          const p = document.createElementNS(ns, "polyline");
+          p.setAttribute("fill", "none");
+          p.setAttribute("stroke", "#000");
+          s.appendChild(p);
+          host.appendChild(s);
+          step = () => {
+            let str = "";
+            for (let i = 0; i < N; i++) {
+              str +=
+                ((i * W) / N).toFixed(1) +
+                "," +
+                (H / 2 - src[off + i] * 100).toFixed(1) +
+                " ";
+            }
+            p.setAttribute("points", str);
+          };
+        } else {
+          const c = document.createElement("canvas");
+          c.width = W;
+          c.height = H;
+          c.style.width = W + "px";
+          c.style.height = H + "px";
+          host.appendChild(c);
+          const data = new Array(N);
+          for (let i = 0; i < N; i++) data[i] = { x: i, y: src[i] };
+          const ch = new Chart(c, {
+            type: "line",
+            data: {
+              datasets: [
+                {
+                  data,
+                  borderColor: "#000",
+                  borderWidth: 1,
+                  pointRadius: 0,
+                  tension: 0,
+                },
+              ],
+            },
+            options: {
+              animation: false,
+              responsive: false,
+              parsing: false,
+              normalized: true,
+              spanGaps: true,
+              plugins: {
+                legend: { display: false },
+                tooltip: { enabled: false },
+                decimation: { enabled: false },
+              },
+              scales: {
+                x: { type: "linear", display: false, min: 0, max: N },
+                y: { display: false, min: -1, max: 2 },
+              },
+            },
+          });
+          step = () => {
+            for (let i = 0; i < N; i++) data[i].y = src[off + i];
+            ch.update("none");
+          };
+        }
+        // warm up
+        for (let k = 0; k < 5; k++) {
+          step();
+          off += 4;
+        }
+        await new Promise((r) => requestAnimationFrame(r));
+        return await new Promise((res) => {
+          let frames = 0,
+            work = 0;
+          const t0 = performance.now();
+          function f() {
+            const a = performance.now();
+            step();
+            off = (off + 4) % 50000;
+            work += performance.now() - a;
+            frames++;
+            if (performance.now() - t0 < dur) requestAnimationFrame(f);
+            else {
+              const el = performance.now() - t0;
+              res({ frames, frameMs: el / frames, workMs: work / frames });
+            }
+          }
+          requestAnimationFrame(f);
+        });
+      };
+    </script>
+  </body>
+</html>

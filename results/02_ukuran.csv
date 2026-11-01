@@ -1,0 +1,4 @@
+konfigurasi,fase,tabel_mentah,ringkasan,tabel_mentah_mb,ringkasan_mb,total_mb
+PostgreSQL biasa + matview,tanpa kompresi,3289849856,7913472,3137.4453125,7.546875,3144.9921875
+TimescaleDB + cagg,tanpa kompresi,3413868544,10010624,3255.71875,9.546875,3265.265625
+TimescaleDB + cagg,terkompresi,2182406144,10010624,2081.3046875,9.546875,2090.8515625

@@ -1,0 +1,91 @@
+konfigurasi,kondisi,ms,n_baris
+PostgreSQL biasa,tanpa kompresi,0.5159580032341182,10
+PostgreSQL biasa,tanpa kompresi,0.49654196482151747,10
+PostgreSQL biasa,tanpa kompresi,0.6667909910902381,10
+PostgreSQL biasa,tanpa kompresi,0.6351670017465949,10
+PostgreSQL biasa,tanpa kompresi,0.8713330025784671,10
+PostgreSQL biasa,tanpa kompresi,0.8981249993667006,10
+PostgreSQL biasa,tanpa kompresi,0.6467089988291264,10
+PostgreSQL biasa,tanpa kompresi,0.8034160127863288,10
+PostgreSQL biasa,tanpa kompresi,0.8112500072456896,10
+PostgreSQL biasa,tanpa kompresi,0.8547079632990062,10
+PostgreSQL biasa,tanpa kompresi,0.6682079983875155,10
+PostgreSQL biasa,tanpa kompresi,0.7815000135451555,10
+PostgreSQL biasa,tanpa kompresi,0.8407920249737799,10
+PostgreSQL biasa,tanpa kompresi,0.433625013101846,10
+PostgreSQL biasa,tanpa kompresi,0.6309580057859421,10
+PostgreSQL biasa,tanpa kompresi,0.7661669515073299,10
+PostgreSQL biasa,tanpa kompresi,0.7432089769281447,10
+PostgreSQL biasa,tanpa kompresi,0.505958974827081,10
+PostgreSQL biasa,tanpa kompresi,0.8121250430122018,10
+PostgreSQL biasa,tanpa kompresi,0.6503750337287784,10
+PostgreSQL biasa,tanpa kompresi,0.43658301001414657,10
+PostgreSQL biasa,tanpa kompresi,0.43299997923895717,10
+PostgreSQL biasa,tanpa kompresi,0.45300001511350274,10
+PostgreSQL biasa,tanpa kompresi,0.4259169800207019,10
+PostgreSQL biasa,tanpa kompresi,0.6151659763418138,10
+PostgreSQL biasa,tanpa kompresi,0.8289170218631625,10
+PostgreSQL biasa,tanpa kompresi,0.7697080145590007,10
+PostgreSQL biasa,tanpa kompresi,0.6312080076895654,10
+PostgreSQL biasa,tanpa kompresi,0.8720419718883932,10
+PostgreSQL biasa,tanpa kompresi,0.8089580223895609,10
+TimescaleDB hypertable,tanpa kompresi,0.4859580076299608,10
+TimescaleDB hypertable,tanpa kompresi,1.0135829797945917,10
+TimescaleDB hypertable,tanpa kompresi,1.3567500282078981,10
+TimescaleDB hypertable,tanpa kompresi,1.8244160455651581,10
+TimescaleDB hypertable,tanpa kompresi,1.4988749753683805,10
+TimescaleDB hypertable,tanpa kompresi,0.8684999775141478,10
+TimescaleDB hypertable,tanpa kompresi,0.9264589753001928,10
+TimescaleDB hypertable,tanpa kompresi,0.4807909717783332,10
+TimescaleDB hypertable,tanpa kompresi,1.6515000024810433,10
+TimescaleDB hypertable,tanpa kompresi,1.0251249768771231,10
+TimescaleDB hypertable,tanpa kompresi,0.9845420136116445,10
+TimescaleDB hypertable,tanpa kompresi,1.6736669931560755,10
+TimescaleDB hypertable,tanpa kompresi,0.6239579524844885,10
+TimescaleDB hypertable,tanpa kompresi,0.4676670068874955,10
+TimescaleDB hypertable,tanpa kompresi,0.4692919901572168,10
+TimescaleDB hypertable,tanpa kompresi,0.5091250059194863,10
+TimescaleDB hypertable,tanpa kompresi,0.7910840213298798,10
+TimescaleDB hypertable,tanpa kompresi,0.6585000082850456,10
+TimescaleDB hypertable,tanpa kompresi,0.8920829859562218,10
+TimescaleDB hypertable,tanpa kompresi,1.4227079809643328,10
+TimescaleDB hypertable,tanpa kompresi,0.6715839845128357,10
+TimescaleDB hypertable,tanpa kompresi,0.4600000102072954,10
+TimescaleDB hypertable,tanpa kompresi,0.4679590347222984,10
+TimescaleDB hypertable,tanpa kompresi,0.46300003305077553,10
+TimescaleDB hypertable,tanpa kompresi,0.4704170278273523,10
+TimescaleDB hypertable,tanpa kompresi,0.45900000259280205,10
+TimescaleDB hypertable,tanpa kompresi,0.588166993111372,10
+TimescaleDB hypertable,tanpa kompresi,1.0255409870296717,10
+TimescaleDB hypertable,tanpa kompresi,0.7944999961182475,10
+TimescaleDB hypertable,tanpa kompresi,0.4848340176977217,10
+TimescaleDB hypertable,terkompresi,0.9723330149427056,10
+TimescaleDB hypertable,terkompresi,1.7193329986184835,10
+TimescaleDB hypertable,terkompresi,2.154082991182804,10
+TimescaleDB hypertable,terkompresi,2.131208952050656,10
+TimescaleDB hypertable,terkompresi,2.554457983933389,10
+TimescaleDB hypertable,terkompresi,1.6915830201469362,10
+TimescaleDB hypertable,terkompresi,1.226999971549958,10
+TimescaleDB hypertable,terkompresi,0.9822500287555158,10
+TimescaleDB hypertable,terkompresi,2.66420905245468,10
+TimescaleDB hypertable,terkompresi,1.6482499777339399,10
+TimescaleDB hypertable,terkompresi,1.3748750207014382,10
+TimescaleDB hypertable,terkompresi,1.475374971050769,10
+TimescaleDB hypertable,terkompresi,1.6671250341460109,10
+TimescaleDB hypertable,terkompresi,0.9339169482700527,10
+TimescaleDB hypertable,terkompresi,1.4233749825507402,10
+TimescaleDB hypertable,terkompresi,1.4520410331897438,10
+TimescaleDB hypertable,terkompresi,1.3616669457405806,10
+TimescaleDB hypertable,terkompresi,1.594125002156943,10
+TimescaleDB hypertable,terkompresi,1.468457980081439,10
+TimescaleDB hypertable,terkompresi,2.2138749482110143,10
+TimescaleDB hypertable,terkompresi,1.1858749785460532,10
+TimescaleDB hypertable,terkompresi,0.9674580069258809,10
+TimescaleDB hypertable,terkompresi,0.9316670475527644,10
+TimescaleDB hypertable,terkompresi,1.196709054056555,10
+TimescaleDB hypertable,terkompresi,0.9505830239504576,10
+TimescaleDB hypertable,terkompresi,1.345416996628046,10
+TimescaleDB hypertable,terkompresi,1.6941249486990273,10
+TimescaleDB hypertable,terkompresi,1.3108339626342058,10
+TimescaleDB hypertable,terkompresi,2.7547499630600214,10
+TimescaleDB hypertable,terkompresi,1.9792080274783075,10

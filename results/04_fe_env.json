@@ -1,0 +1,10 @@
+{
+ "headless": {
+  "chromium": "129.0.6668.29",
+  "gpu": "ANGLE (Apple, Apple M2, OpenGL 4.1)"
+ },
+ "headed": {
+  "chromium": "129.0.6668.29",
+  "gpu": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)"
+ }
+}

@@ -1,0 +1,11 @@
+playwright==1.47.0
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+websockets==13.1
+aiohttp
+psycopg2-binary
+numpy
+keras==3.6.0
+jax[cpu]==0.4.34
+scikit-learn
+matplotlib

@@ -1,0 +1,177 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      body {
+        margin: 0;
+        background: #fff;
+      }
+    </style>
+    <link rel="stylesheet" href="node_modules/uplot/dist/uPlot.min.css" />
+    <script src="node_modules/chart.js/dist/chart.umd.js"></script>
+    <script src="node_modules/uplot/dist/uPlot.iife.min.js"></script>
+  </head>
+  <body>
+    <div id="host" style="width: 1200px; height: 300px"></div>
+    <script>
+      const W = 1200,
+        H = 300,
+        STEP = 4;
+      let SIG = null;
+      window.loadSignal = async () => {
+        SIG = new Float32Array(await (await fetch("signal.f32")).arrayBuffer());
+        return SIG.length;
+      };
+      window.gpu = () => {
+        const c = document.createElement("canvas").getContext("webgl");
+        if (!c) return "tanpa WebGL";
+        const e = c.getExtension("WEBGL_debug_renderer_info");
+        return e
+          ? c.getParameter(e.UNMASKED_RENDERER_WEBGL)
+          : "tidak diketahui";
+      };
+      // Sinyal MIT-BIH (mV) dipetakan ke piksel: tinggi 300 px mewakili -1,5 sampai 2,5 mV
+      const Y = (v) => H - ((v + 1.5) / 4) * H;
+      window.runBench = async function (mode, N, dur) {
+        const host = document.getElementById("host");
+        host.innerHTML = "";
+        let off = 0,
+          step;
+        const axes = mode.endsWith("_axes"),
+          base = mode.replace("_axes", "");
+        if (base === "canvas") {
+          const c = document.createElement("canvas");
+          c.width = W;
+          c.height = H;
+          host.appendChild(c);
+          const g = c.getContext("2d");
+          g.lineWidth = 1;
+          g.strokeStyle = "#000";
+          step = () => {
+            g.clearRect(0, 0, W, H);
+            g.beginPath();
+            for (let i = 0; i < N; i++) {
+              const x = (i * W) / N,
+                y = Y(SIG[off + i]);
+              i ? g.lineTo(x, y) : g.moveTo(x, y);
+            }
+            g.stroke();
+          };
+        } else if (base === "svg") {
+          const ns = "http://www.w3.org/2000/svg";
+          const s = document.createElementNS(ns, "svg");
+          s.setAttribute("width", W);
+          s.setAttribute("height", H);
+          const p = document.createElementNS(ns, "polyline");
+          p.setAttribute("fill", "none");
+          p.setAttribute("stroke", "#000");
+          s.appendChild(p);
+          host.appendChild(s);
+          step = () => {
+            let str = "";
+            for (let i = 0; i < N; i++)
+              str +=
+                ((i * W) / N).toFixed(1) +
+                "," +
+                Y(SIG[off + i]).toFixed(1) +
+                " ";
+            p.setAttribute("points", str);
+          };
+        } else if (base === "uplot") {
+          const xs = new Float64Array(N);
+          for (let i = 0; i < N; i++) xs[i] = i;
+          const u = new uPlot(
+            {
+              width: W,
+              height: H,
+              legend: { show: false },
+              cursor: { show: false },
+              select: { show: false },
+              padding: [0, 0, 0, 0],
+              scales: {
+                x: { time: false, range: [0, N - 1] },
+                y: { range: [-1.5, 2.5] },
+              },
+              axes: axes ? [{}, {}] : [{ show: false }, { show: false }],
+              series: [
+                {},
+                { stroke: "#000", width: 1, points: { show: false } },
+              ],
+            },
+            [xs, SIG.subarray(0, N)],
+            host,
+          );
+          step = () => u.batch(() => u.setData([xs, SIG.subarray(off, off + N)], false)); // batch: gambar sinkron (bawaan uPlot: microtask)
+        } else {
+          const c = document.createElement("canvas");
+          c.width = W;
+          c.height = H;
+          c.style.width = W + "px";
+          c.style.height = H + "px";
+          host.appendChild(c);
+          const data = new Array(N);
+          for (let i = 0; i < N; i++) data[i] = { x: i, y: SIG[i] };
+          const ch = new Chart(c, {
+            type: "line",
+            data: {
+              datasets: [
+                {
+                  data,
+                  borderColor: "#000",
+                  borderWidth: 1,
+                  pointRadius: 0,
+                  tension: 0,
+                },
+              ],
+            },
+            options: {
+              animation: false,
+              responsive: false,
+              parsing: false,
+              normalized: true,
+              spanGaps: true,
+              plugins: {
+                legend: { display: false },
+                tooltip: { enabled: false },
+                decimation: { enabled: false },
+              },
+              events: [],
+              layout: { padding: 0 },
+              scales: {
+                x: { type: "linear", display: axes, min: 0, max: N },
+                y: { display: axes, min: -1.5, max: 2.5 },
+              },
+            },
+          });
+          step = () => {
+            for (let i = 0; i < N; i++) data[i].y = SIG[off + i];
+            ch.update("none");
+          };
+        }
+        for (let k = 0; k < 30; k++) {
+          step();
+          off += STEP;
+        } // pemanasan
+        await new Promise((r) => requestAnimationFrame(r));
+        return await new Promise((res) => {
+          const dt = [],
+            work = [];
+          let last = null;
+          const t0 = performance.now();
+          function f(ts) {
+            const a = performance.now();
+            step();
+            work.push(performance.now() - a);
+            off = (off + STEP) % (SIG.length - N - STEP);
+            if (last !== null) dt.push(ts - last);
+            last = ts;
+            if (performance.now() - t0 < dur) requestAnimationFrame(f);
+            else res({ dt, work });
+          }
+          requestAnimationFrame(f);
+        });
+      };
+    </script>
+  </body>
+</html>
